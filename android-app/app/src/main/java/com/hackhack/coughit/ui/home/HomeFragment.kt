@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.transition.MaterialElevationScale
 import com.hackhack.coughit.R
 import com.hackhack.coughit.databinding.FragmentHomeBinding
 
@@ -35,6 +38,11 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         // code goes here
+        enterTransition = MaterialElevationScale(false)
+        exitTransition = MaterialElevationScale(true)
+
+        // customize toolbar
+        customizeToolbar()
 
 
         return binding.root
@@ -55,5 +63,16 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun customizeToolbar(){
+        val radius = 18
+        val background = binding.homeToolbar.background as MaterialShapeDrawable
+
+        background.shapeAppearanceModel =
+            background.shapeAppearanceModel.toBuilder()
+                .setAllCorners(CornerFamily.ROUNDED, radius.toFloat())
+                .build()
+
     }
 }
