@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.hackhack.coughit.R
 import com.hackhack.coughit.databinding.FragmentRecordBinding
+import com.hackhack.coughit.ui.RestViewModel
 
 
 private const val ARG_PARAM1 = "param1"
@@ -18,6 +21,7 @@ class RecordFragment : Fragment() {
     private var param2: String? = null
     private var _binding: FragmentRecordBinding? = null
     private val binding get() = _binding!!
+    private val restViewModel: RestViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,17 @@ class RecordFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentRecordBinding.inflate(inflater, container, false)
         // code goes here
+        binding.run {
+            // start the timer on button click
+            playButton.setOnClickListener {
+                restViewModel.startCountdown(playButton)
+                playButton.isEnabled = false
+            }
+
+            restViewModel.countdownValue.observe(viewLifecycleOwner, Observer {
+                countdownTimer.text = it
+            })
+        }
 
         return binding.root
     }

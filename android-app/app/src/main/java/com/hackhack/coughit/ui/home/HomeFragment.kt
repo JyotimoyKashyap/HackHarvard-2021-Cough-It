@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.transition.MaterialElevationScale
@@ -43,6 +44,13 @@ class HomeFragment : Fragment() {
 
         // customize toolbar
         customizeToolbar()
+
+        // move to next fragment on click
+        binding.run {
+            addButton.setOnClickListener {
+                binding.root.findNavController().navigate(R.id.action_homeFragment_to_recordFragment);
+            }
+        }
 
 
         return binding.root
