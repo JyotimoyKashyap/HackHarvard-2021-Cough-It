@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,8 +30,9 @@ class RestViewModel(
         // as soon as start countdown will run
         repository.startRecording(context)
 
-        var timer = object : CountDownTimer(30000, 1000){
+        var timer = object : CountDownTimer(7000, 1000){
             override fun onTick(millisUntilFinished: Long) {
+                Log.d("Timer", (millisUntilFinished/1000).toString())
                 countdownValue.postValue((millisUntilFinished/1000).toString())
             }
 
@@ -44,7 +46,8 @@ class RestViewModel(
                 }, 400)
 
             }
-        }
+        }.start()
+
     }
 
     // api all for the cough response
