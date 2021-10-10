@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.result.ResultFragment">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/prediction_text_view"
+        app:layout_constraintBottom_toBottomOf="@id/prediction_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/blob_color"
+        app:lottie_autoPlay="true"/>
+
+
+
     <TextView
         android:id="@+id/prediction_text_view"
         android:layout_width="wrap_content"

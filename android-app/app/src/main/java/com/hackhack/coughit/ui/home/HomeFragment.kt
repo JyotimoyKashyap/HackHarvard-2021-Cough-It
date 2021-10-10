@@ -110,7 +110,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     fun customizeToolbar(){
-        val radius = 18
+        val radius = 30
         val background = binding.homeToolbar.background as MaterialShapeDrawable
 
         background.shapeAppearanceModel =

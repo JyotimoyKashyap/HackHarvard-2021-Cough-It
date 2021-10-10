@@ -2,4 +2,8 @@
     <string name="app_name">CoughIt</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_string">For this app to work correctly, we need voice recording permission and storage permission.
+        Please allow the permissions, if you haven\'t allowed it yet. \n\n
+    Cough It is a very simple and neat app to measure the covid percentage in a human being by measuring the cough samples
+    and predicting the percentage of covid in a human cough sample. </string>
 </resources>
