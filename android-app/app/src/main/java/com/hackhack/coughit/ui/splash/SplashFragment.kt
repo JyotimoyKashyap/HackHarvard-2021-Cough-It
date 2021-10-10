@@ -1,10 +1,14 @@
 package com.hackhack.coughit.ui.splash
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import com.google.android.material.transition.MaterialElevationScale
 import com.hackhack.coughit.R
 import com.hackhack.coughit.databinding.FragmentSplashBinding
 
@@ -36,6 +40,12 @@ class SplashFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
         // code goes here
+        exitTransition = MaterialElevationScale(true)
+
+        // move to next screen after a delay of 500 ms
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.root.findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+        }, 600)
 
 
         return binding.root

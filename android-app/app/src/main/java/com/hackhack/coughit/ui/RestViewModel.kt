@@ -1,8 +1,15 @@
 package com.hackhack.coughit.ui
 
+import android.content.Context
+import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.button.MaterialButton
 import com.hackhack.coughit.model.CoughResponse
 import com.hackhack.coughit.repository.Repository
 import com.hackhack.coughit.util.Resource
@@ -13,8 +20,44 @@ class RestViewModel(
     val repository: Repository
 ): ViewModel(){
 
+    // live data objects
     val coughSampleResult : MutableLiveData<Resource<CoughResponse>> = MutableLiveData()
+    val countdownValue : MutableLiveData<String> = MutableLiveData()
 
+    // filename for recording
+    var filename: String? = null
+    var encodedString: String? = null
+
+
+    // countdown timer in view model
+    fun startCountdown(materialButton: MaterialButton, context: Context) = viewModelScope.launch {
+
+        // as soon as start countdown will run
+        filename = repository.startRecording(context)
+
+        var timer = object : CountDownTimer(7000, 1000){
+            override fun onTick(millisUntilFinished: Long) {
+                Log.d("Timer", (millisUntilFinished/1000).toString())
+                countdownValue.postValue((millisUntilFinished/1000).toString())
+            }
+
+            override fun onFinish() {
+                repository.stopRecording(context = context)
+                countdownValue.postValue("Time Out")
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    materialButton.isEnabled = true
+                    countdownValue.postValue("7")
+                }, 400)
+
+                encodedString = repository.getFileFromFilePath(context = context)
+
+            }
+        }.start()
+
+    }
+
+    // api all for the cough response
     fun getCoughResponse() = viewModelScope.launch {
         coughSampleResult.postValue(Resource.Loading())
 
@@ -22,6 +65,8 @@ class RestViewModel(
         val response = repository.getCoughResult()
         coughSampleResult.postValue(handleRestResponse(response))
     }
+
+
 
     private fun handleRestResponse(response: Response<CoughResponse>) : Resource<CoughResponse>{
         if(response.isSuccessful){

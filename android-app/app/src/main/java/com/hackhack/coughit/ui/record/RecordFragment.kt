@@ -5,8 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.hackhack.coughit.R
 import com.hackhack.coughit.databinding.FragmentRecordBinding
+import com.hackhack.coughit.repository.Repository
+import com.hackhack.coughit.ui.RestViewModel
+import com.hackhack.coughit.ui.ViewModelProviderFactory
 
 
 private const val ARG_PARAM1 = "param1"
@@ -18,6 +24,7 @@ class RecordFragment : Fragment() {
     private var param2: String? = null
     private var _binding: FragmentRecordBinding? = null
     private val binding get() = _binding!!
+    lateinit var restViewModel: RestViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +40,25 @@ class RecordFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentRecordBinding.inflate(inflater, container, false)
+
+        // init the repository & view model
+        val restRepository = Repository(requireContext())
+        val viewModelProviderFactory = ViewModelProviderFactory(restRepository)
+        restViewModel = ViewModelProvider(this, viewModelProviderFactory)
+            .get(RestViewModel::class.java)
+
         // code goes here
+        binding.run {
+            // start the timer on button click
+            playButton.setOnClickListener {
+                restViewModel.startCountdown(playButton, requireContext())
+                playButton.isEnabled = false
+            }
+
+            restViewModel.countdownValue.observe(viewLifecycleOwner, Observer {
+                countdownTimer.text = it
+            })
+        }
 
         return binding.root
     }
