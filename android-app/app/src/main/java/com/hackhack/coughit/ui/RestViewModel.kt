@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.button.MaterialButton
 import com.hackhack.coughit.model.CoughResponse
 import com.hackhack.coughit.repository.Repository
+import com.hackhack.coughit.util.RecordingState
 import com.hackhack.coughit.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -23,6 +24,7 @@ class RestViewModel(
     // live data objects
     val coughSampleResult : MutableLiveData<Resource<CoughResponse>> = MutableLiveData()
     val countdownValue : MutableLiveData<String> = MutableLiveData()
+    val flag : MutableLiveData<RecordingState> = MutableLiveData(RecordingState.IDLE)
 
     // filename for recording
     var filename: String? = null
@@ -30,10 +32,15 @@ class RestViewModel(
 
 
     // countdown timer in view model
-    fun startCountdown(materialButton: MaterialButton, context: Context) = viewModelScope.launch {
+    fun startCountdown(
+        materialButton: MaterialButton,
+                       context: Context,
+                        state: Boolean
+    ) = viewModelScope.launch {
 
         // as soon as start countdown will run
         filename = repository.startRecording(context)
+        flag.postValue(RecordingState.START)
 
         var timer = object : CountDownTimer(7000, 1000){
             override fun onTick(millisUntilFinished: Long) {
@@ -48,6 +55,7 @@ class RestViewModel(
                 Handler(Looper.getMainLooper()).postDelayed({
                     materialButton.isEnabled = true
                     countdownValue.postValue("7")
+                    flag.postValue(RecordingState.STOP)
                 }, 400)
 
                 encodedString = repository.getFileFromFilePath(context = context)
@@ -57,12 +65,18 @@ class RestViewModel(
 
     }
 
+    // encoded string
+    fun getAudioString() : String?{
+        return encodedString
+    }
+
+
     // api all for the cough response
-    fun getCoughResponse() = viewModelScope.launch {
+    fun getCoughResponse(encodedString: String) = viewModelScope.launch {
         coughSampleResult.postValue(Resource.Loading())
 
         // make the network call here
-        val response = repository.getCoughResult()
+        val response = repository.getCoughResult(encodedString)
         coughSampleResult.postValue(handleRestResponse(response))
     }
 

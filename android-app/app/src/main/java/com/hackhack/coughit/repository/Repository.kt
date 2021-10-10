@@ -20,8 +20,8 @@ import kotlin.contracts.contract
 
 class Repository(context: Context) {
 
-    suspend fun getCoughResult() =
-        RetrofitInstance.api.getResult()
+    suspend fun getCoughResult(encodedString: String) =
+        RetrofitInstance.api.getResult(encodedString)
 
     private var output: String? = null
     private var mediaRecorder: MediaRecorder? = null

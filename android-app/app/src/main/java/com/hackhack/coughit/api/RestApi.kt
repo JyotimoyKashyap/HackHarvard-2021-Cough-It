@@ -8,5 +8,5 @@ interface RestApi {
 
     // todo : have to add the endpoint and other details
     @POST("/endpoint")
-    suspend fun getResult() : Response<CoughResponse>
+    suspend fun getResult(encodedString: String) : Response<CoughResponse>
 }
