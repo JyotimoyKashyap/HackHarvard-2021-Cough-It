@@ -8,6 +8,7 @@ import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import com.hackhack.coughit.api.RetrofitInstance
+import com.hackhack.coughit.model.CoughData
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -20,8 +21,8 @@ import kotlin.contracts.contract
 
 class Repository(context: Context) {
 
-    suspend fun getCoughResult(encodedString: String) =
-        RetrofitInstance.api.getResult(encodedString)
+    suspend fun getCoughResult(coughData: CoughData) =
+        RetrofitInstance.api.getResult(coughData)
 
     private var output: String? = null
     private var mediaRecorder: MediaRecorder? = null

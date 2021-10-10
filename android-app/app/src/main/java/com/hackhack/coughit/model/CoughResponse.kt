@@ -1,4 +1,3 @@
 package com.hackhack.coughit.model
 
-class CoughResponse {
-}
+data class CoughResponse(val prediction: String)

@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.button.MaterialButton
+import com.hackhack.coughit.model.CoughData
 import com.hackhack.coughit.model.CoughResponse
 import com.hackhack.coughit.repository.Repository
 import com.hackhack.coughit.util.RecordingState
@@ -72,11 +73,11 @@ class RestViewModel(
 
 
     // api all for the cough response
-    fun getCoughResponse(encodedString: String) = viewModelScope.launch {
+    fun getCoughResponse(coughData: CoughData) = viewModelScope.launch {
         coughSampleResult.postValue(Resource.Loading())
 
         // make the network call here
-        val response = repository.getCoughResult(encodedString)
+        val response = repository.getCoughResult(coughData)
         coughSampleResult.postValue(handleRestResponse(response))
     }
 

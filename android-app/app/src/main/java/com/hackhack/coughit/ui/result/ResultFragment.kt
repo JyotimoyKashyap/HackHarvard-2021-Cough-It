@@ -8,9 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.transition.MaterialElevationScale
 import com.hackhack.coughit.R
 import com.hackhack.coughit.databinding.FragmentResultBinding
+import com.hackhack.coughit.model.CoughData
 import com.hackhack.coughit.repository.Repository
 import com.hackhack.coughit.ui.RestViewModel
 import com.hackhack.coughit.ui.ViewModelProviderFactory
@@ -46,6 +49,8 @@ class ResultFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentResultBinding.inflate(inflater, container, false)
         // your code goes here
+        exitTransition = MaterialElevationScale(false)
+        enterTransition = MaterialElevationScale(true)
         encodedString = args.encodedString
 
         Log.d("resultencoded" , "encoded string: $encodedString")
@@ -57,7 +62,7 @@ class ResultFragment : Fragment() {
             .get(RestViewModel::class.java)
 
         // make the api call
-        // restViewModel.getCoughResponse(encodedString!!)
+        restViewModel.getCoughResponse(CoughData(encodedString!!))
 
         // observer the api call
         restViewModel.coughSampleResult.observe(viewLifecycleOwner, Observer {
@@ -65,10 +70,17 @@ class ResultFragment : Fragment() {
                 is Resource.Success ->{
                     it.data?.let {
                         // here I will get the cough response model
+
                     }
                 }
             }
         })
+
+        binding.run {
+            nextButton.setOnClickListener {
+                findNavController().navigate(R.id.action_resultFragment_to_homeFragment)
+            }
+        }
 
 
         return binding.root
