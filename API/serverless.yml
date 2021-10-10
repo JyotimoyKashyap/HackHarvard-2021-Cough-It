@@ -1,0 +1,23 @@
+service: coughit-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: ap-south-1
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+functions:
+  app:
+    handler: lambda.handler
+    events:
+      - http: ANY /
+        cors: true
+      - http: "ANY {proxy+}"
+        cors: true
+      - https: ANY /
+        cors: true
+      - https: "ANY {proxy+}"
+        cors: true
