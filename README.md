@@ -1,6 +1,10 @@
 # **Cough It**
 #### COVID-19 Diagnosis at Ease
 
+<p align="center">
+  <img src="./assets/thumbnail.png" />
+</p>
+
 ## Inspiration
 As the pandemic has nearly crippled all the nations and still in many countries, people are in lockdown, there are many innovations in these two years that came up in order to find an effective way of tackling the issues of COVID-19. Out of all the problems, detecting the COVID-19 strain has been the hardest so far as it is always mutating due to rapid infections. 
 
@@ -40,3 +44,21 @@ The web backend is actually a Node.js application which is deployed on EC2 insta
 
 At first, we created a backend server using Node.js and Express.js and deployed the Node.js server in AWS EC2 instance. The server then receives the audio file in Base64 encoded form from the android client through a POST request API call. After that, the file is getting converted to .wav file through a module in terminal through command. After successfully, generating the .wav file, we put that .wav file as argument in the pre-processor which is a python script. Then we call the AWS Sagemaker API to get the predictions and the Node.js application then sends the predictions back to the android counterpart to the endpoint. 
 
+## Tech Stack
+<p align="center">
+  <img src="./assets/tech_stack.png" />
+</p>
+
+
+## Screenshots for the Android App
+
+<br/>
+
+<div style="display: flex; justify-content: center">
+  <img width="250px" height="500px" src="./assets/home.jpg"/> &nbsp; &nbsp;
+  <img width="250px" height="500px" src="./assets/home_dark.jpg"/> &nbsp; &nbsp;
+  <img width="250px" height="500px" src="./assets/record.jpg"/><br/> <br/>
+  <img width="250px" height="500px" src="./assets/record_dark.jpg"/> &nbsp; &nbsp;
+  <img width="250px" height="500px" src="./assets/result.jpg"/>&nbsp; &nbsp;
+  <img width="250px" height="500px" src="./assets/result_dark.jpg"/>
+</div>
