@@ -1,5 +1,6 @@
 package com.hackhack.coughit.ui
 
+import android.content.Context
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
@@ -23,13 +24,18 @@ class RestViewModel(
     val countdownValue : MutableLiveData<String> = MutableLiveData()
 
     // countdown timer in view model
-    fun startCountdown(materialButton: MaterialButton) = viewModelScope.launch {
+    fun startCountdown(materialButton: MaterialButton, context: Context) = viewModelScope.launch {
+
+        // as soon as start countdown will run
+        repository.startRecording(context)
+
         var timer = object : CountDownTimer(30000, 1000){
             override fun onTick(millisUntilFinished: Long) {
                 countdownValue.postValue((millisUntilFinished/1000).toString())
             }
 
             override fun onFinish() {
+                repository.stopRecording(context = context)
                 countdownValue.postValue("Time Out")
 
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -49,6 +55,8 @@ class RestViewModel(
         val response = repository.getCoughResult()
         coughSampleResult.postValue(handleRestResponse(response))
     }
+
+
 
     private fun handleRestResponse(response: Response<CoughResponse>) : Resource<CoughResponse>{
         if(response.isSuccessful){

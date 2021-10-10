@@ -45,6 +45,9 @@ class HomeFragment : Fragment() {
         // customize toolbar
         customizeToolbar()
 
+        // the app will need permission to access microphone
+
+
         // move to next fragment on click
         binding.run {
             addButton.setOnClickListener {
