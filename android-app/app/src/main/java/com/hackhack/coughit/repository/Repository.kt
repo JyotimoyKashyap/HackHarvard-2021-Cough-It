@@ -1,21 +1,20 @@
 package com.hackhack.coughit.repository
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.media.AudioFormat
-import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
+import android.os.FileUtils
+import android.util.Base64
+import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import com.hackhack.coughit.api.RetrofitInstance
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
+import java.lang.Exception
 import java.lang.IllegalStateException
+import java.util.*
 import kotlin.contracts.contract
 
 
@@ -34,33 +33,9 @@ class Repository(context: Context) {
     lateinit var file: File
     private var directory: String? = null
 
-    // code for the media controller
-    init {
-//        mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//            MediaRecorder(context)
-//        }else{
-//            MediaRecorder()
-//        }
 
 
-
-//        directory = context.getExternalFilesDir(null)?.path
-//        val file = File(directory)
-//
-//        if(!file.exists()) file.mkdirs()
-//
-//        output = directory + System.currentTimeMillis() +"/recording.mp3"
-
-
-//        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-//        mediaRecorder?.setAudioSamplingRate(22050)
-//        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-//        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-//        mediaRecorder?.setOutputFile(output)
-
-    }
-
-    fun startRecording(context: Context){
+    fun startRecording(context: Context) : String{
 
         mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             MediaRecorder(context)
@@ -74,9 +49,9 @@ class Repository(context: Context) {
         val root = context.getExternalFilesDir(null)
         val file = File((root?.absolutePath  + "/DataSamples"))
         if(!file.exists()) file.mkdirs()
-        filename = root?.absolutePath + "/DataSamples" + (System.currentTimeMillis().toString()+ ".mp3" )
+        filename = root?.absolutePath + "/DataSamples" + (System.currentTimeMillis().toString()+ ".m4a" )
         mediaRecorder!!.setOutputFile(filename)
-        mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+        mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
         mediaRecorder!!.setAudioSamplingRate(22050)
 
 
@@ -90,6 +65,8 @@ class Repository(context: Context) {
         }catch (e: IOException){
             e.printStackTrace()
         }
+
+        return filename as String
     }
 
     fun stopRecording(context: Context){
@@ -103,6 +80,23 @@ class Repository(context: Context) {
         }
 
         mediaRecorder = null
+    }
+
+    // get the file from the location and convert that into base64 string
+    fun getFileFromFilePath(context: Context): String {
+        val file = File(filename!!)
+
+        val byteArray = file.readBytes()
+
+        val encoding = Base64.encodeToString(byteArray, Base64.DEFAULT)
+        Log.d("encoding" , "encoding : $encoding")
+
+        // save the file
+//        val filename = "sample.txt"
+//        var file2 = File(context.getExternalFilesDir(null)?.absolutePath + filename)
+//        file2.writeText(encoding)
+
+        return encoding
     }
 
 }

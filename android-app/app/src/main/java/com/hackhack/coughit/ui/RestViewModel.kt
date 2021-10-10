@@ -24,11 +24,16 @@ class RestViewModel(
     val coughSampleResult : MutableLiveData<Resource<CoughResponse>> = MutableLiveData()
     val countdownValue : MutableLiveData<String> = MutableLiveData()
 
+    // filename for recording
+    var filename: String? = null
+    var encodedString: String? = null
+
+
     // countdown timer in view model
     fun startCountdown(materialButton: MaterialButton, context: Context) = viewModelScope.launch {
 
         // as soon as start countdown will run
-        repository.startRecording(context)
+        filename = repository.startRecording(context)
 
         var timer = object : CountDownTimer(7000, 1000){
             override fun onTick(millisUntilFinished: Long) {
@@ -44,6 +49,8 @@ class RestViewModel(
                     materialButton.isEnabled = true
                     countdownValue.postValue("7")
                 }, 400)
+
+                encodedString = repository.getFileFromFilePath(context = context)
 
             }
         }.start()
