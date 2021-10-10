@@ -70,7 +70,8 @@ class ResultFragment : Fragment() {
                 is Resource.Success ->{
                     it.data?.let {
                         // here I will get the cough response model
-
+                        val prediction = String.format("%.3f",it.predictions[0][0]).toDouble()
+                        binding.predictionTextView.text = prediction.toString()
                     }
                 }
             }

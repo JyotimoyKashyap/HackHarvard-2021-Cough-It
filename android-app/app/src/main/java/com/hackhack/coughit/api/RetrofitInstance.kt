@@ -9,7 +9,7 @@ class RetrofitInstance {
     companion object{
 
         // base url for amazon aws
-        const val BASE_URL = "https://l03d92mkdk.execute-api.ap-south-1.amazonaws.com/dev"
+        const val BASE_URL = "http://13.233.56.238:8080/api/ml/"
 
         private val retrofit by lazy {
             val logging = HttpLoggingInterceptor()

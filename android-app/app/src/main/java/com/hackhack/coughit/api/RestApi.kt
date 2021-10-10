@@ -9,7 +9,7 @@ import retrofit2.http.POST
 
 interface RestApi {
 
-    // todo : have to add the endpoint and other details
-    @POST("/endpoint")
+
+    @POST("prediction")
     suspend fun getResult(@Body coughData: CoughData) : Response<CoughResponse>
 }
