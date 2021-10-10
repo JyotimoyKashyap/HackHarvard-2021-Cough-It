@@ -9,10 +9,15 @@
   },
   "dependencies": {
     "aws-serverless-express": "^3.4.0",
+    "axios": "^0.22.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "ffmpeg": "^0.0.4",
     "lambda-warmer": "^1.2.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "mp3-to-wav": "^0.1.11",
+    "python-shell": "^3.0.1",
+    "shelljs": "^0.8.4"
   },
   "devDependencies": {
     "serverless": "^2.62.0",

@@ -4,9 +4,11 @@ const cors = require("cors");
 
 const app = express();
 
+const router = require("./routes/routes");
+
 app.use(cors());
 app.set("trust proxy", true);
-app.use(express.json());
+app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -26,5 +28,7 @@ if (process.env.NODE_ENV === "development") {
 app.get("/", (req, res) => {
   res.send("Welcome to the Cought-It API");
 });
+
+app.use("/api/ml", router);
 
 module.exports = app;
